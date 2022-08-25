@@ -216,6 +216,7 @@ public abstract class VideoPlayerUi extends PlayerUi
         binding.openInBrowser.setOnClickListener(this);
         binding.playerCloseButton.setOnClickListener(this);
         binding.switchMute.setOnClickListener(this);
+        binding.switchVideo.setOnClickListener(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.itemsListPanel, (view, windowInsets) -> {
             final Insets cutout = windowInsets.getInsets(WindowInsetsCompat.Type.displayCutout());
@@ -1363,6 +1364,8 @@ public abstract class VideoPlayerUi extends PlayerUi
             player.setRecovery();
             NavigationHelper.playOnMainPlayer(context, player.getPlayQueue(), true);
             return;
+        } else if (v.getId() == binding.switchVideo.getId()) {
+            toggleVideo();
         } else if (v.getId() == binding.switchMute.getId()) {
             player.toggleMute();
         } else if (v.getId() == binding.playerCloseButton.getId()) {
@@ -1376,6 +1379,16 @@ public abstract class VideoPlayerUi extends PlayerUi
         }
 
         manageControlsAfterOnClick(v);
+    }
+
+    private boolean isVideoOn = true;
+    private void toggleVideo() {
+        isVideoOn = !isVideoOn;
+        if (!isVideoOn) {
+            animate(binding.surfaceForeground, true, 100);
+        } else {
+            animate(binding.surfaceForeground, false, 100);
+        }
     }
 
     /**
